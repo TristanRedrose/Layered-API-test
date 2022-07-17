@@ -1,0 +1,30 @@
+import { User } from "../types/user.types";
+import pool from "../config/db"
+
+interface IUserStore {
+    userExists: (username: string) => Promise<boolean>;
+    addUser: (username:string, password:string) => Promise<void>;
+    getUser: (username:string) => Promise<User | null>;
+}
+
+class UserStore implements IUserStore {
+    async userExists(username:string): Promise<boolean> {
+        const queryResult = await pool.query(`SELECT * FROM users WHERE username = $1`,[username]);
+        return queryResult.rowCount > 0;
+    };
+
+    async addUser(username:string, password:string): Promise<void> {
+        await pool.query(`INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`,[username, password]);
+    };
+
+    async getUser(username:string): Promise<User | null> {
+        const queryResult = await pool.query(`SELECT * FROM users WHERE username = $1`,[username]);
+        if (queryResult.rowCount) {
+            return queryResult.rows[0];
+        }
+
+        return null;
+    }
+}
+
+export default new UserStore as IUserStore;
