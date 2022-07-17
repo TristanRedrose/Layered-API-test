@@ -3,7 +3,7 @@ import pool from "../config/db"
 
 interface IUserStore {
     userExists: (username: string) => Promise<boolean>;
-    addUser: (username:string, password:string) => Promise<void>;
+    addUser: (username:string, password:string) => Promise<User>;
     getUser: (username:string) => Promise<User | null>;
 }
 
@@ -13,8 +13,10 @@ class UserStore implements IUserStore {
         return queryResult.rowCount > 0;
     };
 
-    async addUser(username:string, password:string): Promise<void> {
-        await pool.query(`INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`,[username, password]);
+    async addUser(username:string, password:string): Promise<User> {
+        const queryResults = await pool.query(`INSERT INTO users (username, password) VALUES ($1, $2) RETURNING * FROM users WHERE username = $1`,[username, password]);
+        const user = queryResults.rows[0];
+        return user;
     };
 
     async getUser(username:string): Promise<User | null> {

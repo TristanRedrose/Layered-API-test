@@ -1,5 +1,6 @@
 import express from "express";
-import routes from  "../routes/routes"
+import routes from  "../routes/routes";
+import cors from "cors";
 
 const app = () => {
     const app = express();
@@ -8,6 +9,7 @@ const app = () => {
     const PORT = process.env.PORT || 3000
 
     // Middleware
+    app.use(cors());
     app.use(express.json());
 
     // Routing

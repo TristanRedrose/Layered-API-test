@@ -9,7 +9,6 @@ const router = express.Router();
 
 router.post('/register', 
     body('username').isLength({ min:1 }),
-    body('username').isEmpty(), 
     body('password').isLength({ min:1 }),
     (req: TypedRequestBody<AuthRequest>, res) => {
         const errors = validationResult(req);

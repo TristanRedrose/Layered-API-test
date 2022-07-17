@@ -4,7 +4,7 @@ import { User } from "../types/user.types";
 
 interface IUserService {
     getAuthenticatedUser: (username:string, password:string) => Promise<User | null>
-    addUser: (username:string, password:string) => Promise<boolean>
+    addUser: (username:string, password:string) => Promise<User | null>
 }
 
 class UserService implements IUserService {
@@ -17,13 +17,13 @@ class UserService implements IUserService {
         return null;
     }
 
-    async addUser(username:string, password:string): Promise<boolean> {
+    async addUser(username:string, password:string): Promise<User | null> {
         const userExists = await userStore.userExists(username);
         if (userExists) {
-            return false;
+            return null;
         }
-        await userStore.addUser(username, password);
-        return true;
+        const user = await userStore.addUser(username, password);
+        return user;
     }
 }
 
