@@ -1,6 +1,6 @@
 import wishlistService from "../services/wishlist.service";
 import { Response } from "express";
-import { WishlistRequest, Wishlist } from "../types/wishlist.types";
+import { WishlistRequest } from "../types/wishlist.types";
 import { decodeToken } from "../middleware/decodeToken";
 
 export interface IWishlistController {

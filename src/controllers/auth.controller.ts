@@ -22,7 +22,7 @@ class AuthController implements IAuthController {
             });  
         }
 
-        return res.json("Woops, invalid username/password");
+        return res.status(400).json({ message:'Invalid username/password'});
     }
 
     async register(req:AuthRequest, res:Response): Promise<Response> {
@@ -35,7 +35,7 @@ class AuthController implements IAuthController {
             });
         }
         
-        return res.json("User already exists");  
+        return res.status(400).json({ message: 'User already exists' });  
     }
 }
 
