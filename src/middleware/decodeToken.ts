@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
 import { secretKey } from "../env/env";
-import { User } from "../types/user.types";
+import { tokenPayload } from "../types/shared.types";
 
-export function decodeToken(token:string):number {
-    const decoded = jwt.verify(token, secretKey) as {
-        user: User
-    };
-    return decoded.user.id
+export function decodeToken(token:string) {
+    
+    const decoded = jwt.verify(token, secretKey) as tokenPayload
+    return decoded.user.user_id
 }
